@@ -35,11 +35,57 @@ chip8::~chip8()
 
 void chip8::init()
 {
-  //
+  pc = 0x200; // Program counter starts at 0x200
+  opcode = 0; // Reset current opcode
+  I = 0;      // Reset current register
+  sp = 0;     // Reset stack pointer
+
+  // Clear display
+  for (int i = 0; i < 64 * 32; ++i)
+  {
+    gfx[i] = 0;
+  }
+
+  // Clear stack
+  for (int i = 0; i < 16; ++i)
+  {
+    stack[i] = 0;
+  }
+
+  for (int i = 0; i < 16; ++i)
+  {
+    key[i] = 0;
+  }
+
+  // Clear registers V0-VF
+  for (int i = 0; i < 16; ++i)
+  {
+    V[i] = 0;
+  }
+
+  // Clear memory
+  for (int i = 0; i < 4096; ++i)
+  {
+    memory[i] = 0;
+  }
+
+  // Load fontset
+  for (int i = 0; i < 80; ++i)
+  {
+    memory[i] = chip8_fontset[i];
+  }
+
+  delay_timer = 0;
+  sound_timer = 0;
+
+  drawFlag = true;
+
+  srand(time(NULL));
 }
 
 bool chip8::load(const char *filename)
 {
+  init();
   return true;
 }
 
